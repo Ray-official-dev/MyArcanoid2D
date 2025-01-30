@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
+    public UnityEvent OnCollisionEnter;
     [SerializeField] private float _speed = 1;
 
     private Rigidbody2D _body;
@@ -14,6 +16,8 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        OnCollisionEnter?.Invoke();
+
         if (collision.gameObject.TryGetComponent(out Paddle paddle))
         {
             ContactPoint2D contact = collision.GetContact(0);
