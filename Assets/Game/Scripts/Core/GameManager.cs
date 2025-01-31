@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Links")]
     [SerializeField] private Ball _ball;
     [SerializeField] private Paddle _paddle;
     [SerializeField] private InputSystem _input;
+    [SerializeField] private BrickSpawner _brickSpawner;
+
+    [Header("Settings")]
+    [SerializeField] private LevelData[] _levels;
     [SerializeField] private float _ballDistanceFromPlatform;
 
     private bool _isGameStarted;
@@ -17,6 +22,11 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         _input.OnTouchCanceled -= TouchCanceled;
+    }
+
+    private void Start()
+    {
+        _brickSpawner.SpawnBricks(_levels[0]);
     }
 
     private void TouchCanceled()

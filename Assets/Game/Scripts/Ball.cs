@@ -19,12 +19,18 @@ public class Ball : MonoBehaviour
         OnCollisionEnter?.Invoke();
 
         if (collision.gameObject.TryGetComponent(out Paddle paddle))
-        {
-            ContactPoint2D contact = collision.GetContact(0);
-            float offset = paddle.transform.position.x - contact.point.x;
-            Vector2 direction = new Vector2(offset, 1).normalized;
-            _body.linearVelocity = direction * _body.linearVelocity.magnitude;
-        }
+            ReflectFromPaddle(collision, paddle);
+
+        if (collision.gameObject.TryGetComponent(out Brick brick))
+            brick.TakeDamage(1);
+    }
+
+    private void ReflectFromPaddle(Collision2D collision, Paddle paddle)
+    {
+        ContactPoint2D contact = collision.GetContact(0);
+        float offset = paddle.transform.position.x - contact.point.x;
+        Vector2 direction = new Vector2(offset, 1).normalized;
+        _body.linearVelocity = direction * _body.linearVelocity.magnitude;
     }
 
     public void PushUp()
