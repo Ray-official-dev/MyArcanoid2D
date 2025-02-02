@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3053714065556095489}
   - component: {fileID: 6513381693093778627}
   m_Layer: 0
-  m_Name: CommonBrick
+  m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -1572391234087474867, guid: c60f9efd3396a254aba600b3fac14099, type: 3}
-  m_Color: {r: 0.564558, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -147,5 +147,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e97e0b0743f3c22479f35b654ba111e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ui: {fileID: 0}
-  _hitPoints: 1
+  _audioResource: {fileID: 6418180475301049370, guid: fae60c75c4c8a82469a727364b114228, type: 2}
+  _data:
+  - _hitPoints: 1
+    _sprite: {fileID: -1572391234087474867, guid: c60f9efd3396a254aba600b3fac14099, type: 3}
+    _color: {r: 1, g: 0.85783035, b: 0, a: 1}
+  - _hitPoints: 2
+    _sprite: {fileID: 5352722585669383705, guid: 999bea6a38baca14cb8ec25c48b2b931, type: 3}
+    _color: {r: 1, g: 0.51526874, b: 0, a: 1}
+  - _hitPoints: 3
+    _sprite: {fileID: -7581300730633801200, guid: 1ea507502fb7dd247aa2d3a1227ca1ee, type: 3}
+    _color: {r: 1, g: 0.21963641, b: 0, a: 1}

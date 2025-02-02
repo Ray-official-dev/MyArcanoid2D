@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level", menuName = "Game Data/Level")]
-public class LevelData : ScriptableObject
+public class Level : ScriptableObject
 {
     public int Rows => _rows;
     public int Columns => _columns;

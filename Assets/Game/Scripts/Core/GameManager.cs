@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BrickSpawner _brickSpawner;
 
     [Header("Settings")]
-    [SerializeField] private LevelData[] _levels;
+    [SerializeField] private Level[] _levels;
     [SerializeField] private float _ballDistanceFromPlatform;
 
     private bool _isGameStarted;
