@@ -1,15 +1,16 @@
-using UnityEngine.Pool;
 using System.Linq;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Brick : MonoBehaviour
 {
+    public event Action<Brick> OnDestroyed;
+
     [SerializeField] BrickData[] _data;
 
     private AudioSource _audio;
     private ParticleSystem _particles;
-    private ObjectPool<Brick> _pool;
 
     private int _hitPoints;
 
@@ -18,14 +19,12 @@ public class Brick : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
-        gameObject.hideFlags = HideFlags.HideInHierarchy;
     }
 
-    public void Set(ObjectPool<Brick> pool, AudioSource audio, ParticleSystem particles, int hitPoints)
+    public void Init(AudioSource audio, ParticleSystem particles, int hitPoints)
     {
         _audio = audio;
         _particles = particles;
-        _pool = pool;
         _hitPoints = hitPoints;
 
         Setup(hitPoints);
@@ -52,7 +51,8 @@ public class Brick : MonoBehaviour
             _particles.startColor = _renderer.color;
             _particles.Play();
 
-            _pool.Release(this);
+            OnDestroyed?.Invoke(this);
+            Destroy(gameObject);
             return;
         }
 

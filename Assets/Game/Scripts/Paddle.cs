@@ -1,15 +1,17 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Paddle : MonoBehaviour
+public class Paddle : MonoSingleton<Paddle>
 {
     [SerializeField] private InputSystem _input;
 
     private Rigidbody2D _body;
     private Vector2 _startPosition;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _body = GetComponent<Rigidbody2D>();
         _startPosition = transform.position;
     }

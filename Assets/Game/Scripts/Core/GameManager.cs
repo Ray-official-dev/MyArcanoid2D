@@ -1,32 +1,94 @@
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
+    public event Action<int> OnLevelLoaded;
+    public event Action<int> OnLivesChanged;
+
+    public int CurrentLevel => _currentLevel;
+    public int MaxLives => _maxLives;
+    
     [Header("Links")]
-    [SerializeField] private Ball _ball;
-    [SerializeField] private Paddle _paddle;
-    [SerializeField] private InputSystem _input;
-    [SerializeField] private BrickSpawner _brickSpawner;
+    [SerializeField] Ball _ballPrefab;
 
     [Header("Settings")]
-    [SerializeField] private Level[] _levels;
-    [SerializeField] private float _ballDistanceFromPlatform;
+    [SerializeField] Level[] _levels;
+    [SerializeField] int _maxLives;
+
+    [SerializeField] InputSystem _input;
+    [SerializeField] BricksContainer _container;
+
+    private int _currentLives;
+    private int _currentLevel;
 
     private bool _isGameStarted;
+    private Ball _ball;
 
     private void OnEnable()
     {
         _input.OnTouchCanceled += TouchCanceled;
+        _container.OnBricksFinished += BricksFinished;
     }
 
     private void OnDisable()
     {
         _input.OnTouchCanceled -= TouchCanceled;
+        _container.OnBricksFinished -= BricksFinished;
     }
 
     private void Start()
     {
-        _brickSpawner.SpawnBricks(_levels[0]);
+        LoadLevel();
+    }
+
+    private void BallDestroyed()
+    {
+        _currentLives--;
+
+        if (_currentLives == 0)
+        {
+            LoadLevel();
+            return;
+        }
+        
+        OnLivesChanged?.Invoke(_currentLives);
+
+        _isGameStarted = false;
+        SpawnBall();
+    }
+
+    private void LoadLevel()
+    {
+        _isGameStarted = false;
+        _currentLives = _maxLives;
+
+        if (_ball is not null)
+            Destroy(_ball.gameObject);
+
+        _container.ClearAllBricks();
+        SpawnBricks();
+        SpawnBall();
+
+        OnLevelLoaded?.Invoke(_currentLevel);
+    }
+
+    private void SpawnBall()
+    {
+        _ball = Instantiate(_ballPrefab);
+        _ball.OnDestroyed += BallDestroyed;
+    }
+
+    private void BricksFinished()
+    {
+        _currentLevel++;
+        OnLevelLoaded?.Invoke(_currentLevel);
+        LoadLevel();
+    }
+
+    private void SpawnBricks()
+    {
+        _container.SpawnBricks(_levels[_currentLevel]);
     }
 
     private void TouchCanceled()
@@ -36,13 +98,5 @@ public class GameManager : MonoBehaviour
 
         _isGameStarted = true;
         _ball.PushUp();
-    }
-
-    private void Update()
-    {
-        if (!_isGameStarted)
-        {
-            _ball.transform.position = new Vector3(_paddle.transform.position.x, _paddle.transform.position.y + _ballDistanceFromPlatform);
-        }
     }
 }
