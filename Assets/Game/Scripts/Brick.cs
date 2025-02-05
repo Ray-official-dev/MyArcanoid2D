@@ -1,39 +1,38 @@
 using System.Linq;
 using UnityEngine;
-using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Brick : MonoBehaviour
 {
-    public event Action<Brick> OnDestroyed;
+    public BrickType InitialType => _initialType;
 
     [SerializeField] BrickData[] _data;
 
     private AudioSource _audio;
     private ParticleSystem _particles;
-
-    private int _hitPoints;
-
     private SpriteRenderer _renderer;
+
+    private BrickType _initialType;
+    private int _hitPoints;
 
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
     }
 
-    public void Init(AudioSource audio, ParticleSystem particles, int hitPoints)
+    public void Init(AudioSource audio, ParticleSystem particles, BrickType type)
     {
         _audio = audio;
         _particles = particles;
-        _hitPoints = hitPoints;
+        _initialType = type;
 
-        Setup(hitPoints);
+        Setup(type);
     }
 
-    private void Setup(int hitPoints)
+    private void Setup(BrickType type)
     {
-        var data = _data.First((brick) => brick.HitPoints == hitPoints ? true : false);
-
+        var data = _data.First((c) => type == c.Type ? true : false);
+        
         _renderer.sprite = data.Sprite;
         _renderer.color = data.Color;
         _hitPoints = data.HitPoints;
@@ -48,14 +47,23 @@ public class Brick : MonoBehaviour
             _audio.Play();
 
             _particles.transform.position = transform.position;
-            _particles.startColor = _renderer.color;
+            var effect = _particles.main;
+            effect.startColor = _renderer.color;
             _particles.Play();
 
-            OnDestroyed?.Invoke(this);
+            EventBus.Instance.BrickDestroyed(this);
             Destroy(gameObject);
             return;
         }
 
-        Setup(_hitPoints);
+        Setup(_data.First((c) => _hitPoints == c.HitPoints ? true : false).Type);
+    }
+
+    public enum BrickType
+    { 
+        None,
+        Simple,
+        Reinforced,
+        Durable
     }
 }

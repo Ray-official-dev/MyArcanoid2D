@@ -8,33 +8,32 @@ public class GameManager : MonoBehaviour
 
     public int CurrentLevel => _currentLevel;
     public int MaxLives => _maxLives;
-    
-    [Header("Links")]
-    [SerializeField] Ball _ballPrefab;
 
     [Header("Settings")]
     [SerializeField] Level[] _levels;
     [SerializeField] int _maxLives;
 
     [SerializeField] InputSystem _input;
-    [SerializeField] BricksContainer _container;
+    [SerializeField] BricksContainer _bricks;
+    [SerializeField] BallsContainer _balls;
 
     private int _currentLives;
     private int _currentLevel;
 
     private bool _isGameStarted;
-    private Ball _ball;
 
     private void OnEnable()
     {
         _input.OnTouchCanceled += TouchCanceled;
-        _container.OnBricksFinished += BricksFinished;
+        _bricks.OnBricksFinished += BricksFinished;
+        _balls.OnAllBallsDestroyed += AllBallsDestroyed;
     }
 
     private void OnDisable()
     {
         _input.OnTouchCanceled -= TouchCanceled;
-        _container.OnBricksFinished -= BricksFinished;
+        _bricks.OnBricksFinished -= BricksFinished;
+        _balls.OnAllBallsDestroyed -= AllBallsDestroyed;
     }
 
     private void Start()
@@ -42,7 +41,7 @@ public class GameManager : MonoBehaviour
         LoadLevel();
     }
 
-    private void BallDestroyed()
+    private void AllBallsDestroyed()
     {
         _currentLives--;
 
@@ -55,7 +54,7 @@ public class GameManager : MonoBehaviour
         OnLivesChanged?.Invoke(_currentLives);
 
         _isGameStarted = false;
-        SpawnBall();
+        _balls.SpawnBall();
     }
 
     private void LoadLevel()
@@ -63,20 +62,14 @@ public class GameManager : MonoBehaviour
         _isGameStarted = false;
         _currentLives = _maxLives;
 
-        if (_ball is not null)
-            Destroy(_ball.gameObject);
-
-        _container.ClearAllBricks();
+        _balls.Clear();
+        _bricks.Clear();
+        _balls.SpawnBall();
         SpawnBricks();
-        SpawnBall();
 
         OnLevelLoaded?.Invoke(_currentLevel);
-    }
 
-    private void SpawnBall()
-    {
-        _ball = Instantiate(_ballPrefab);
-        _ball.OnDestroyed += BallDestroyed;
+        EventBus.Instance.LevelRestarted();
     }
 
     private void BricksFinished()
@@ -88,7 +81,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnBricks()
     {
-        _container.SpawnBricks(_levels[_currentLevel]);
+        _bricks.SpawnBricks(_levels[_currentLevel]);
     }
 
     private void TouchCanceled()
@@ -97,6 +90,6 @@ public class GameManager : MonoBehaviour
             return;
 
         _isGameStarted = true;
-        _ball.PushUp();
+        _balls.PushBall();
     }
 }

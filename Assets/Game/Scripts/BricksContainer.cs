@@ -23,6 +23,16 @@ public class BricksContainer : MonoBehaviour
         _remainingBricks = new List<Brick>();
     }
 
+    private void OnEnable()
+    {
+        EventBus.Instance.OnBrickDestroyed += BrickDestroyed;
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Instance.OnBrickDestroyed -= BrickDestroyed;
+    }
+
     public void SpawnBricks(Level level)
     {
         Vector2 gridCenter = new Vector2(level.Columns * _widthShift / 2f, level.Rows * _heightShift / 2f);
@@ -33,24 +43,23 @@ public class BricksContainer : MonoBehaviour
         {
             for (int col = 0; col < level.Columns; col++)
             {
-                int hitPoints = level.Layout[row].Bricks[col];
+                Brick.BrickType type = level.Layout[row].Bricks[col];
 
-                if (hitPoints == 0)
+                if (type == Brick.BrickType.None)
                     continue;
 
                 Vector2 spawnPosition = new Vector2(col * _widthShift, -row * _heightShift + yOffset)
                     - gridCenter + new Vector2(_widthShift / 2f, -_heightShift / 2f);
 
                 var brick = Instantiate(_prefab, spawnPosition, Quaternion.identity);
-                brick.Init(_audio, _particles, hitPoints);
-                brick.OnDestroyed += OnBrickDestroyed;
+                brick.Init(_audio, _particles, type);
                 _remainingBricks.Add(brick);
                 OnRemainingBricksChanged?.Invoke(_remainingBricks.Count);
             }
         }
     }
 
-    public void ClearAllBricks()
+    public void Clear()
     {
         foreach (var brick in _remainingBricks)
             Destroy(brick.gameObject);
@@ -60,7 +69,7 @@ public class BricksContainer : MonoBehaviour
         OnRemainingBricksChanged?.Invoke(_remainingBricks.Count);
     }
 
-    private void OnBrickDestroyed(Brick brick)
+    private void BrickDestroyed(Brick brick)
     {
         _remainingBricks.Remove(brick);
         OnRemainingBricksChanged?.Invoke(_remainingBricks.Count);

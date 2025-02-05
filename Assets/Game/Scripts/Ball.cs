@@ -5,7 +5,7 @@ using System;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
-    public event Action OnDestroyed;
+    public event Action<Ball> OnDestroyed;
 
     public UnityEvent OnCollisionEnter;
 
@@ -35,7 +35,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnDestroyed?.Invoke();
+        OnDestroyed?.Invoke(this);
         Destroy(gameObject);
     }
 
@@ -53,9 +53,9 @@ public class Ball : MonoBehaviour
         _body.linearVelocity = direction * _body.linearVelocity.magnitude;
     }
 
-    public void PushUp()
+    public void Push(Vector2 direction)
     {
-        _body.linearVelocityY = _speed;
+        _body.linearVelocity = direction * _speed;
         _isPushed = true;
     }
 }

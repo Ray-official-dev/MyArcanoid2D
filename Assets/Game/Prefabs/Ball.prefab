@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8706328194730080640}
   - component: {fileID: 725062791899001441}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrailEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 6807184304687538506}
   - component: {fileID: 263160820684523817}
   - component: {fileID: 2483071991897299047}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _speed: 6
+  _speed: 4
   _distanceFromPlatform: 0.4
 --- !u!82 &2483071991897299047
 AudioSource:

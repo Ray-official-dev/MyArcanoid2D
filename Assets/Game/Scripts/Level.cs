@@ -15,7 +15,7 @@ public class Level : ScriptableObject
     [Serializable]
     public class RowData
     {
-        public int[] Bricks => _bricks;
-        [SerializeField] int[] _bricks;
+        public Brick.BrickType[] Bricks => _bricks;
+        [SerializeField] Brick.BrickType[] _bricks;
     }
 }
