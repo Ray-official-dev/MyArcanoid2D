@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437f602b7d9e8e94097189aa658bda6e, type: 3}
+  m_Name: GameRulesConfig
+  m_EditorClassIdentifier: 
+  _levels:
+  - {fileID: 11400000, guid: bae89300682559046b64df21a631425e, type: 2}
+  - {fileID: 11400000, guid: 7028b91643dd42b40a6d10fc2240aeac, type: 2}
+  - {fileID: 11400000, guid: 3bad3b7bed447a741be13fe86e8b1993, type: 2}
+  - {fileID: 11400000, guid: f5718b35cd2719840a20eb217ad3367d, type: 2}
+  - {fileID: 11400000, guid: aede2a83c25be674aa19a3d97a994901, type: 2}
+  - {fileID: 11400000, guid: 4c09fe286bedd034d9a0f2f09a8a8818, type: 2}
+  - {fileID: 11400000, guid: b288148bc997586478026e1196bd92d5, type: 2}
+  - {fileID: 11400000, guid: 777424e1484371e4eb70c1cd8747b9cb, type: 2}
+  - {fileID: 11400000, guid: 35cc312b074f10c41be1fd3265c2b106, type: 2}
+  - {fileID: 11400000, guid: d5f01b12993d57c48a4962a946c062ba, type: 2}
+  _maxLives: 3

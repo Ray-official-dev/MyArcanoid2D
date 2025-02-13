@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5fefbf09f889084294504cb04078de0, type: 3}
+  m_Name: ShrinkPaddle
+  m_EditorClassIdentifier: 
+  _type: 2
+  _sprite: {fileID: 9023443583779548886, guid: 6be13bd0dff3a2748a3bf8d0ec31e692, type: 3}
+  _duration: 5
